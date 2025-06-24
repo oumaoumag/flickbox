@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import type { MediaItem } from "@/types/media"
+import type { WatchlistItem } from "@/types/media"
 
 export function useWatchlist() {
-  const [watchlist, setWatchlist] = useState<MediaItem[]>([])
+  const [watchlist, setWatchlist] = useState<WatchlistItem[]>([])
 
   useEffect(() => {
     // Loading watchlist from localStorage on mount
@@ -18,8 +18,29 @@ export function useWatchlist() {
     }
   }, [])
 
-  const addToWatchlist = (item: MediaItem) => {
-    const newWatchlist = [...watchlist, item]
+  const addToWatchlist = (item: any) => {
+    // Convert MediaDetails to WatchlistItem format
+    const watchlistItem: WatchlistItem = {
+      id: item.id,
+      title: item.title,
+      name: item.name,
+      overview: item.overview,
+      poster_path: item.poster_path,
+      backdrop_path: item.backdrop_path,
+      release_date: item.release_date,
+      first_air_date: item.first_air_date,
+      vote_average: item.vote_average,
+      vote_count: item.vote_count,
+      popularity: item.popularity,
+      // Convert genres array to genre_ids array if needed
+      genre_ids: item.genre_ids || (item.genres ? item.genres.map((g: any) => g.id) : []),
+      media_type: item.media_type,
+      // Add watchlist-specific properties
+      added_at: new Date().toISOString(),
+      watched: false
+    }
+
+    const newWatchlist = [...watchlist, watchlistItem]
     setWatchlist(newWatchlist)
     localStorage.setItem("flickbox-watchlist", JSON.stringify(newWatchlist))
   }
