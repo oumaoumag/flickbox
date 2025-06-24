@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { Search, Filter, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -15,6 +16,7 @@ import type { Movie, TVShow } from "@/types/media"
 type SortOption = "popularity.desc" | "popularity.asc" | "vote_average.desc" | "vote_average.asc" | "release_date.desc" | "release_date.asc"
 
 export default function SearchPage() {
+  const searchParams = useSearchParams()
   const [query, setQuery] = useState("")
   const [activeTab, setActiveTab] = useState("all")
   const [sortBy, setSortBy] = useState<SortOption>("popularity.desc")
@@ -28,6 +30,19 @@ export default function SearchPage() {
   const [hasMore, setHasMore] = useState(false)
 
   const debouncedQuery = useDebounce(query, 300)
+
+  // Initialize from URL parameters
+  useEffect(() => {
+    const urlQuery = searchParams.get('q')
+    const urlTab = searchParams.get('tab')
+
+    if (urlQuery) {
+      setQuery(urlQuery)
+    }
+    if (urlTab && ['all', 'movies', 'tv'].includes(urlTab)) {
+      setActiveTab(urlTab)
+    }
+  }, [searchParams])
 
   // Search function
   const performSearch = async (searchQuery: string, page: number = 1, loadMore: boolean = false) => {
