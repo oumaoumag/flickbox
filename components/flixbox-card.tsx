@@ -25,7 +25,7 @@ export function NetflixCard({ item, type }: NetflixCardProps) {
   const [trailerKey, setTrailerKey] = useState<string | null>(null)
 
   // Determine the actual media type
-  const actualType = type === "mixed" ? (item.title ? "movie" : "tv") : type
+  const actualType = type === "mixed" ? ((item as any).title ? "movie" : "tv") : type
 
   useEffect(() => {
     const fetchTrailer = async () => {
@@ -49,9 +49,9 @@ export function NetflixCard({ item, type }: NetflixCardProps) {
   }, [isHovered, item.id, actualType, trailerKey])
 
   const isInList = isInWatchlist(item.id, actualType)
-  const title = item.title || item.name || "Unknown Title"
+  const title = (item as any).title || (item as any).name || "Unknown Title"
   const year =
-    item.release_date || item.first_air_date ? new Date(item.release_date || item.first_air_date!).getFullYear() : null
+    (item as any).release_date || (item as any).first_air_date ? new Date((item as any).release_date || (item as any).first_air_date!).getFullYear() : null
 
   const handleCardClick = () => {
     router.push(`/${actualType}/${item.id}`)
