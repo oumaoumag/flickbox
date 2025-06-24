@@ -5,6 +5,8 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "@/components/auth-provider"
 import { Header } from "@/components/header"
+import { Toaster } from "@/components/ui/toaster"
+import { WatchlistProvider } from "@/contexts/watchlist-context"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,10 +25,13 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AuthProvider>
-            <div className="min-h-screen flex flex-col">
-              <Header />
-              <main className="flex-1">{children}</main>
-            </div>
+            <WatchlistProvider>
+              <div className="min-h-screen flex flex-col">
+                <Header />
+                <main className="flex-1">{children}</main>
+              </div>
+              <Toaster />
+            </WatchlistProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

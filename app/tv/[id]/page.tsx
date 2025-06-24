@@ -22,6 +22,7 @@ export default function TVShowDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist()
 
+  // Now using global context, this will automatically re-render when watchlist changes
   const isInList = tvShow ? isInWatchlist(tvShow.id, "tv") : false
 
   useEffect(() => {
