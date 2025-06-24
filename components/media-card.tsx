@@ -41,7 +41,7 @@ export function MediaCard({ item, type, variant = "default" }: MediaCardProps) {
 
   const posterUrl = item.poster_path
     ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
-    : "/placeholder.svg?height=600&width=400"
+    : "/placeholder.svg"
 
   return (
     <Card 
