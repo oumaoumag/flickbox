@@ -6,6 +6,13 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
+index.html
+index.html.backup
+metadata.md
+movie_app.md
+issues.md
+Task_ Build a Movie_TV Show Discovery Web App-1.pdf
+README.old.mdGIT 
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -32,6 +39,9 @@ coverage
 # Bower dependency directory (https://bower.io/)
 bower_components
 
+README.old.md
+movie.md
+
 # node-waf configuration
 .lock-wscript
 
@@ -44,6 +54,8 @@ jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
+
+files/
 
 # TypeScript cache
 *.tsbuildinfo
@@ -134,3 +146,26 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
