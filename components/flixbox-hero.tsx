@@ -20,10 +20,10 @@ export function NetflixHero({ item, type }: NetflixHeroProps) {
   const [showVideo, setShowVideo] = useState(false)
 
   // Determine the actual media type
-  const actualType = type === "mixed" ? (item.title ? "movie" : "tv") : type
-  const title = item.title || item.name || "Unknown Title"
+  const actualType = type === "mixed" ? ((item as any).title ? "movie" : "tv") : type
+  const title = (item as any).title || (item as any).name || "Unknown Title"
   const year =
-    item.release_date || item.first_air_date ? new Date(item.release_date || item.first_air_date!).getFullYear() : null
+    (item as any).release_date || (item as any).first_air_date ? new Date((item as any).release_date || (item as any).first_air_date!).getFullYear() : null
 
   const isInList = isInWatchlist(item.id, actualType)
 
