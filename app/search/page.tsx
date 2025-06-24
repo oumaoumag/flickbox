@@ -104,12 +104,12 @@ export default function SearchPage() {
         case "vote_average.asc":
           return a.vote_average - b.vote_average
         case "release_date.desc":
-          const dateA = new Date(a.release_date || a.first_air_date || "")
-          const dateB = new Date(b.release_date || b.first_air_date || "")
+          const dateA = new Date((a as any).release_date || (a as any).first_air_date || "")
+          const dateB = new Date((b as any).release_date || (b as any).first_air_date || "")
           return dateB.getTime() - dateA.getTime()
         case "release_date.asc":
-          const dateC = new Date(a.release_date || a.first_air_date || "")
-          const dateD = new Date(b.release_date || b.first_air_date || "")
+          const dateC = new Date((a as any).release_date || (a as any).first_air_date || "")
+          const dateD = new Date((b as any).release_date || (b as any).first_air_date || "")
           return dateC.getTime() - dateD.getTime()
         default:
           return 0

@@ -145,6 +145,36 @@ class TMDBService {
       throw error
     }
   }
+
+  async getPopularMovies(): Promise<Movie[]> {
+    try {
+      const data = await this.fetchFromTMDB("/movie/popular")
+      return data.results || []
+    } catch (error) {
+      console.error("Error fetching popular movies:", error)
+      return []
+    }
+  }
+
+  async getTopRatedMovies(): Promise<Movie[]> {
+    try {
+      const data = await this.fetchFromTMDB("/movie/top_rated")
+      return data.results || []
+    } catch (error) {
+      console.error("Error fetching top rated movies:", error)
+      return []
+    }
+  }
+
+  async getTopRatedTVShows(): Promise<TVShow[]> {
+    try {
+      const data = await this.fetchFromTMDB("/tv/top_rated")
+      return data.results || []
+    } catch (error) {
+      console.error("Error fetching top rated TV shows:", error)
+      return []
+    }
+  }
 }
 
 export const tmdbService = new TMDBService()

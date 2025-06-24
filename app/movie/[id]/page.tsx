@@ -157,7 +157,7 @@ export default function MovieDetailPage() {
                   {isInList ? "In Watchlist" : "Add to Watchlist"}
                 </Button>
 
-                <TrailerButton itemId={movie.id} mediaType="movie" title={movie.title} variant="hero" />
+                <TrailerButton itemId={movie.id} mediaType="movie" title={movie.title || "Unknown Title"} variant="hero" />
               </div>
             </div>
           </div>
