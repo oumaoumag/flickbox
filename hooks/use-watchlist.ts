@@ -25,7 +25,7 @@ export function useWatchlist() {
   }
 
   const removeFromWatchlist = (id: number, type: "movie" | "tv") => {
-    const newWatchlist = watchlist.filter(item => 
+    const newWatchlist = watchlist.filter(item =>
       !(item.id === id && item.media_type === type)
     )
     setWatchlist(newWatchlist)
@@ -36,10 +36,22 @@ export function useWatchlist() {
     return watchlist.some(item => item.id === id && item.media_type === type)
   }
 
+  const toggleWatched = (id: number, type: "movie" | "tv") => {
+    const newWatchlist = watchlist.map(item => {
+      if (item.id === id && item.media_type === type) {
+        return { ...item, watched: !item.watched }
+      }
+      return item
+    })
+    setWatchlist(newWatchlist)
+    localStorage.setItem("flickbox-watchlist", JSON.stringify(newWatchlist))
+  }
+
   return {
     watchlist,
     addToWatchlist,
     removeFromWatchlist,
-    isInWatchlist
+    isInWatchlist,
+    toggleWatched
   }
 }
