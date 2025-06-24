@@ -68,15 +68,15 @@ export default function SearchPage() {
       if (loadMore) {
         setMovies(prev => [...prev, ...movieResults.results])
         setTVShows(prev => [...prev, ...tvResults.results])
-        setAllResults(prev => [...prev, ...multiResults.results])
+        setAllResults(prev => [...prev, ...multiResults])
       } else {
         setMovies(movieResults.results)
         setTVShows(tvResults.results)
-        setAllResults(multiResults.results)
+        setAllResults(multiResults)
       }
 
-      setTotalPages(Math.max(movieResults.total_pages, tvResults.total_pages, multiResults.total_pages))
-      setHasMore(page < Math.max(movieResults.total_pages, tvResults.total_pages, multiResults.total_pages))
+      setTotalPages(Math.max(movieResults.total_pages, tvResults.total_pages))
+      setHasMore(page < Math.max(movieResults.total_pages, tvResults.total_pages))
     } catch (err) {
       setError("Failed to search. Please try again.")
       console.error("Search error:", err)

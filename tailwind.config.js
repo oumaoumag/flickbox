@@ -50,6 +50,7 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "netflix-red": "#E50914",
       },
       borderRadius: {
         lg: "var(--radius)",
