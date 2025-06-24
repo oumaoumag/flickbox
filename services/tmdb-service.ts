@@ -4,7 +4,7 @@ const TMDB_BASE_URL = "https://api.themoviedb.org/3"
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY || "demo_key"
 
 class TMDBService {
-  private async fetchFromTMDB(endpoint: string, params: Record<string, string> = {}) {
+  private async fetchFromTMDB(endpoint: string, params: Record<string, string> = {}): Promise<any> {
     const url = new URL(`${TMDB_BASE_URL}${endpoint}`)
     url.searchParams.append("api_key", TMDB_API_KEY)
 
@@ -37,25 +37,7 @@ class TMDBService {
     }
   }
 
-  async getTrendingMovies(): Promise<Movie[]> {
-    try {
-      const data = await this.fetchFromTMDB("/trending/movie/week")
-      return data.results || []
-    } catch (error) {
-      console.error("Error fetching trending movies:", error)
-      return []
-    }
-  }
 
-  async getTrendingTVShows(): Promise<TVShow[]> {
-    try {
-      const data = await this.fetchFromTMDB("/trending/tv/week")
-      return data.results || []
-    } catch (error) {
-      console.error("Error fetching trending TV shows:", error)
-      return []
-    }
-  }
 
   async searchMovies(query: string, page: number = 1) {
     try {
@@ -91,22 +73,7 @@ class TMDBService {
     }
   }
 
-  async searchMulti(query: string, page: number = 1) {
-    try {
-      const data = await this.fetchFromTMDB("/search/multi", {
-        query: encodeURIComponent(query),
-        page: page.toString(),
-      })
-      return {
-        results: data.results || [],
-        total_results: data.total_results || 0,
-        total_pages: data.total_pages || 0,
-      }
-    } catch (error) {
-      console.error("Error searching multi:", error)
-      return { results: [], total_results: 0, total_pages: 0 }
-    }
-  }
+
 
   async getMovieDetails(id: number): Promise<MediaDetails> {
     try {
@@ -146,32 +113,189 @@ class TMDBService {
     }
   }
 
-  async getPopularMovies(): Promise<Movie[]> {
+  async getPopularMovies(): Promise<{ results: Movie[] }> {
     try {
       const data = await this.fetchFromTMDB("/movie/popular")
-      return data.results || []
+      return { results: data.results || [] }
     } catch (error) {
       console.error("Error fetching popular movies:", error)
-      return []
+      return { results: [] }
     }
   }
 
-  async getTopRatedMovies(): Promise<Movie[]> {
+  async getTopRatedMovies(): Promise<{ results: Movie[] }> {
     try {
       const data = await this.fetchFromTMDB("/movie/top_rated")
-      return data.results || []
+      return { results: data.results || [] }
     } catch (error) {
       console.error("Error fetching top rated movies:", error)
+      return { results: [] }
+    }
+  }
+
+  async getTopRatedTVShows(): Promise<{ results: TVShow[] }> {
+    try {
+      const data = await this.fetchFromTMDB("/tv/top_rated")
+      return { results: data.results || [] }
+    } catch (error) {
+      console.error("Error fetching top rated TV shows:", error)
+      return { results: [] }
+    }
+  }
+
+  async getUpcomingMovies(): Promise<{ results: Movie[] }> {
+    try {
+      const data = await this.fetchFromTMDB("/movie/upcoming")
+      return { results: data.results || [] }
+    } catch (error) {
+      console.error("Error fetching upcoming movies:", error)
+      return { results: [] }
+    }
+  }
+
+  async getPopularTVShows(): Promise<{ results: TVShow[] }> {
+    try {
+      const data = await this.fetchFromTMDB("/tv/popular")
+      return { results: data.results || [] }
+    } catch (error) {
+      console.error("Error fetching popular TV shows:", error)
+      return { results: [] }
+    }
+  }
+
+  async getAiringTodayTVShows(): Promise<{ results: TVShow[] }> {
+    try {
+      const data = await this.fetchFromTMDB("/tv/airing_today")
+      return { results: data.results || [] }
+    } catch (error) {
+      console.error("Error fetching airing today TV shows:", error)
+      return { results: [] }
+    }
+  }
+
+  async getMovieGenres(): Promise<Genre[]> {
+    try {
+      const data = await this.fetchFromTMDB("/genre/movie/list")
+      return data.genres || []
+    } catch (error) {
+      console.error("Error fetching movie genres:", error)
       return []
     }
   }
 
-  async getTopRatedTVShows(): Promise<TVShow[]> {
+  async getTVGenres(): Promise<Genre[]> {
     try {
-      const data = await this.fetchFromTMDB("/tv/top_rated")
+      const data = await this.fetchFromTMDB("/genre/tv/list")
+      return data.genres || []
+    } catch (error) {
+      console.error("Error fetching TV genres:", error)
+      return []
+    }
+  }
+
+  async discoverMovies(filters: {
+    genre?: number[]
+    sortBy?: string
+    page?: number
+    year?: number
+    rating?: number
+  } = {}): Promise<{ results: Movie[]; total_pages: number; total_results: number }> {
+    try {
+      const params: Record<string, string> = {
+        page: (filters.page || 1).toString(),
+        sort_by: filters.sortBy || "popularity.desc",
+      }
+
+      if (filters.genre && filters.genre.length > 0) {
+        params.with_genres = filters.genre.join(",")
+      }
+
+      if (filters.year) {
+        params.year = filters.year.toString()
+      }
+
+      if (filters.rating) {
+        params["vote_average.gte"] = filters.rating.toString()
+      }
+
+      const data = await this.fetchFromTMDB("/discover/movie", params)
+      return {
+        results: data.results || [],
+        total_pages: data.total_pages || 0,
+        total_results: data.total_results || 0,
+      }
+    } catch (error) {
+      console.error("Error discovering movies:", error)
+      return { results: [], total_pages: 0, total_results: 0 }
+    }
+  }
+
+  async discoverTVShows(filters: {
+    genre?: number[]
+    sortBy?: string
+    page?: number
+    year?: number
+    rating?: number
+  } = {}): Promise<{ results: TVShow[]; total_pages: number; total_results: number }> {
+    try {
+      const params: Record<string, string> = {
+        page: (filters.page || 1).toString(),
+        sort_by: filters.sortBy || "popularity.desc",
+      }
+
+      if (filters.genre && filters.genre.length > 0) {
+        params.with_genres = filters.genre.join(",")
+      }
+
+      if (filters.year) {
+        params.first_air_date_year = filters.year.toString()
+      }
+
+      if (filters.rating) {
+        params["vote_average.gte"] = filters.rating.toString()
+      }
+
+      const data = await this.fetchFromTMDB("/discover/tv", params)
+      return {
+        results: data.results || [],
+        total_pages: data.total_pages || 0,
+        total_results: data.total_results || 0,
+      }
+    } catch (error) {
+      console.error("Error discovering TV shows:", error)
+      return { results: [], total_pages: 0, total_results: 0 }
+    }
+  }
+
+  async getTrendingMovies(timeWindow: "day" | "week" = "week"): Promise<Movie[]> {
+    try {
+      const data = await this.fetchFromTMDB(`/trending/movie/${timeWindow}`)
       return data.results || []
     } catch (error) {
-      console.error("Error fetching top rated TV shows:", error)
+      console.error("Error fetching trending movies:", error)
+      return []
+    }
+  }
+
+  async getTrendingTVShows(timeWindow: "day" | "week" = "week"): Promise<TVShow[]> {
+    try {
+      const data = await this.fetchFromTMDB(`/trending/tv/${timeWindow}`)
+      return data.results || []
+    } catch (error) {
+      console.error("Error fetching trending TV shows:", error)
+      return []
+    }
+  }
+
+  async searchMulti(query: string, page: number = 1): Promise<(Movie | TVShow)[]> {
+    try {
+      const data = await this.fetchFromTMDB("/search/multi", {
+        query: encodeURIComponent(query),
+        page: page.toString(),
+      })
+      return data.results || []
+    } catch (error) {
+      console.error("Error searching multi:", error)
       return []
     }
   }
