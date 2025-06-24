@@ -22,7 +22,7 @@ export function Header() {
               href="/"
               className="px-4 py-2 rounded-lg font-medium transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground"
             >
-              🔥 Trending
+              🏠 Home
             </Link>
             <Link
               href="/search"
@@ -31,10 +31,16 @@ export function Header() {
               🔍 Search
             </Link>
             <Link
-              href="/watchlist"
+              href="/search?tab=movies"
               className="px-4 py-2 rounded-lg font-medium transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground"
             >
-              📋 Watchlist
+              🎬 Movies
+            </Link>
+            <Link
+              href="/search?tab=tv"
+              className="px-4 py-2 rounded-lg font-medium transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground"
+            >
+              📺 TV Shows
             </Link>
           </nav>
         </div>
