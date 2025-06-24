@@ -21,6 +21,7 @@ export function MediaCard({ item, type, variant = "default" }: MediaCardProps) {
   const { addToWatchlist, removeFromWatchlist, isInWatchlist } = useWatchlist()
   const [imageLoaded, setImageLoaded] = useState(false)
 
+  // Now using global context, this will automatically re-render when watchlist changes
   const isInList = isInWatchlist(item.id, type)
   const title = item.title || item.name || "Unknown Title"
   const releaseDate = item.release_date || item.first_air_date
