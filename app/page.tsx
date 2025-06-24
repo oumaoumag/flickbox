@@ -7,6 +7,8 @@ import { NetflixOriginals } from "@/components/flixbox-originals"
 import { LoadingSpinner } from "@/components/loading-spinner"
 import { tmdbService } from "@/services/tmdb-service"
 import type { Movie, TVShow } from "@/types/media"
+import Link from "next/link"
+import { Card, CardContent } from "@/components/ui/card"
 
 export default function HomePage() {
   const [heroItem, setHeroItem] = useState<Movie | TVShow | null>(null)
@@ -40,9 +42,9 @@ export default function HomePage() {
         // Set state
         setTrendingMovies(trendingMoviesData)
         setTrendingTV(trendingTVData)
-        setPopularMovies(popularMoviesData)
-        setTopRatedMovies(topRatedMoviesData)
-        setTopRatedTV(topRatedTVData)
+        setPopularMovies(popularMoviesData.results)
+        setTopRatedMovies(topRatedMoviesData.results)
+        setTopRatedTV(topRatedTVData.results)
 
         // Set hero item (first trending movie or TV show)
         const allTrending = [...trendingMoviesData, ...trendingTVData]
@@ -92,6 +94,20 @@ export default function HomePage() {
           items={[...trendingMovies.slice(0, 10), ...trendingTV.slice(0, 10)]}
           type="mixed"
         />
+
+        {/* Genres Quick Access */}
+        <div className="container mx-auto px-4 md:px-16">
+          <h2 className="text-2xl font-bold text-white mb-6">Browse by Genre</h2>
+          <Link href="/genres" className="group block">
+            <Card className="bg-gradient-to-r from-purple-600 to-pink-600 border-0 hover:from-purple-700 hover:to-pink-700 transition-all duration-300 group-hover:scale-105">
+              <CardContent className="p-8 text-center">
+                <div className="text-4xl mb-4">🎭</div>
+                <h3 className="text-xl font-semibold text-white mb-2">Discover by Genre</h3>
+                <p className="text-gray-200">Explore movies and TV shows by your favorite genres</p>
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
 
         {/* Popular Movies */}
         <NetflixRow
