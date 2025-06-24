@@ -22,8 +22,8 @@ export function MediaCard({ item, type, variant = "default" }: MediaCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   const isInList = isInWatchlist(item.id, type)
-  const title = item.title || item.name || "Unknown Title"
-  const releaseDate = item.release_date || item.first_air_date
+  const title = ('title' in item ? item.title : item.name) || "Unknown Title"
+  const releaseDate = 'release_date' in item ? item.release_date : item.first_air_date
   const year = releaseDate ? new Date(releaseDate).getFullYear() : null
 
   const handleCardClick = () => {
