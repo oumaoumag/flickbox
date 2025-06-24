@@ -31,6 +31,12 @@ export function Header() {
               🔍 Search
             </Link>
             <Link
+              href="/genres"
+              className="px-4 py-2 rounded-lg font-medium transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground"
+            >
+              🎭 Genres
+            </Link>
+            <Link
               href="/search?tab=movies"
               className="px-4 py-2 rounded-lg font-medium transition-colors duration-200 hover:bg-secondary hover:text-secondary-foreground"
             >
