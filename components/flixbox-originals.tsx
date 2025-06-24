@@ -96,10 +96,12 @@ function OriginalCard({ item, type }: OriginalCardProps) {
   const router = useRouter()
   
   // Determine the actual media type
-  const actualType = type === "mixed" ? (item.title ? "movie" : "tv") : type
-  const title = item.title || item.name || "Unknown Title"
-  const year =
-    item.release_date || item.first_air_date ? new Date(item.release_date || item.first_air_date!).getFullYear() : null
+  const actualType = type === "mixed" ? ('title' in item ? "movie" : "tv") : type
+  const title = ('title' in item ? item.title : item.name) || "Unknown Title"
+  const year = (() => {
+    const date = 'release_date' in item ? item.release_date : item.first_air_date
+    return date ? new Date(date).getFullYear() : null
+  })()
 
   const handleClick = () => {
     router.push(`/${actualType}/${item.id}`)
